@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>คลังหนังสือฟรี</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0e17;
+      --surface: #1a1828;
+      --card: #201e30;
+      --accent: #e8c547;
+      --accent2: #ff6b6b;
+      --text: #fffffe;
+      --muted: #a7a9be;
+      --border: #2e2b45;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Sarabun', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      position: relative;
+      padding: 60px 24px 48px;
+      text-align: center;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, #3b2f6e55 0%, transparent 70%);
+      pointer-events: none;
+    }
+    header .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: var(--bg);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      color: var(--text);
+      line-height: 1.15;
+    }
+    header h1 span { color: var(--accent); }
+    header p {
+      color: var(--muted);
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    /* ── Search bar ── */
+    .search-wrap {
+      max-width: 760px;
+      margin: 0 auto 12px;
+      padding: 0 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .search-wrap input,
+    .search-wrap select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .search-wrap input { flex: 1; min-width: 200px; }
+    .search-wrap input::placeholder { color: var(--muted); }
+    .search-wrap input:focus,
+    .search-wrap select:focus { border-color: var(--accent); }
+    .search-wrap select option { background: var(--surface); }
+
+    /* ── Stats bar ── */
+    .stats {
+      max-width: 760px;
+      margin: 0 auto 32px;
+      padding: 0 20px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .stats span { color: var(--accent); font-weight: 600; }
+
+    /* ── Grid ── */
+    .grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 24px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+      animation: fadeUp .4s ease both;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px #00000060;
+      border-color: var(--accent);
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .card-img {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      display: block;
+      background: var(--border);
+    }
+    .card-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 6px;
+    }
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text);
+    }
+    .card-author {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .card-cat {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: #3b2f6e;
+      color: var(--accent);
+      padding: 3px 10px;
+      border-radius: 100px;
+      align-self: flex-start;
+    }
+    .card-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      flex: 1;
+    }
+    .card-btn {
+      margin-top: 10px;
+      display: block;
+      text-align: center;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'Sarabun', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 9px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background .2s, transform .1s;
+    }
+    .card-btn:hover { background: #f5d76e; transform: scale(1.02); }
+
+    /* ── Empty / Loading ── */
+    .msg {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    .msg .icon { font-size: 3rem; display: block; margin-bottom: 12px; }
+    .loader {
+      width: 36px; height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      margin: 60px auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Config notice ── */
+    .config-notice {
+      max-width: 600px;
+      margin: 0 auto 28px;
+      padding: 14px 20px;
+      background: #2a1f00;
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-align: center;
+    }
+    .config-notice code {
+      background: #3b2f00;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge">📚 Free Library</div>
+    <h1>คลัง<span>หนังสือ</span>ฟรี</h1>
+    <p>ค้นหา อ่าน และดาวน์โหลดหนังสือได้ทันที</p>
+  </header>
+
+  <!-- แจ้งเตือนถ้ายังไม่ได้ตั้งค่า URL -->
+  <div class="config-notice" id="config-notice" style="display:none">
+    ⚠️ ยังไม่ได้ตั้งค่า — เปิดไฟล์นี้แล้วแก้ <code>APPS_SCRIPT_URL</code> ในโค้ด JavaScript ด้านล่าง
+  </div>
+
+  <div class="search-wrap">
+    <input id="search" type="text" placeholder="🔍 ค้นหาชื่อหนังสือ หรือผู้แต่ง..." oninput="filterBooks()" />
+    <select id="category" onchange="filterBooks()">
+      <option value="">ทุกหมวดหมู่</option>
+    </select>
+  </div>
+  <div class="stats" id="stats"></div>
+
+  <main class="grid" id="grid">
+    <div class="loader"></div>
+  </main>
+
+<script>
+  // ============================================================
+  //  ⚙️ แก้ตรงนี้: วาง URL ของ Google Apps Script ของคุณ
+  // ============================================================
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyGymiqwp5NLyAkS5dB1B_c_gIvECx-ly6EuG5_fTGOPHieGdDiUpBzfT7PFMcCSEFv/exec";
+  // ============================================================
+
+  let allBooks = [];
+
+  // ---- Demo data (จะถูกแทนที่เมื่อตั้งค่า URL แล้ว) ----
+  const DEMO = [
+    { title:"ความเงียบงามของป่า", author:"สมชาย รักธรรม", category:"ธรรมชาติ", description:"บันทึกการเดินทางในป่าลึกของไทย เต็มไปด้วยภาพธรรมชาติที่สวยงาม", cover_url:"https://picsum.photos/seed/book1/300/450", download_url:"#" },
+    { title:"Python เบื้องต้น", author:"วิชัย โค้ดดี", category:"เทคโนโลยี", description:"เรียนรู้การเขียนโปรแกรม Python ตั้งแต่ศูนย์ ฉบับภาษาไทย", cover_url:"https://picsum.photos/seed/book2/300/450", download_url:"#" },
+    { title:"ตำนานพระอภัยมณี", author:"สุนทรภู่", category:"วรรณกรรม", description:"วรรณคดีไทยชั้นเยี่ยม เรื่องราวของพระอภัยมณีและผองเพื่อน", cover_url:"https://picsum.photos/seed/book3/300/450", download_url:"#" },
+    { title:"เศรษฐกิจพอเพียง", author:"ทีมนักวิชาการ", category:"เศรษฐกิจ", description:"แนวคิดเศรษฐกิจพอเพียงตามแนวพระราชดำริ อ่านเข้าใจง่าย", cover_url:"https://picsum.photos/seed/book4/300/450", download_url:"#" },
+    { title:"ศิลปะการทำอาหารไทย", author:"แม่ครัวใจดี", category:"อาหาร", description:"รวมสูตรอาหารไทยโบราณ ทำได้เองที่บ้าน", cover_url:"https://picsum.photos/seed/book5/300/450", download_url:"#" },
+    { title:"จิตวิทยาสำหรับทุกคน", author:"ดร.สุภา ใจดี", category:"จิตวิทยา", description:"เข้าใจตัวเองและคนรอบข้างผ่านหลักจิตวิทยาพื้นฐาน", cover_url:"https://picsum.photos/seed/book6/300/450", download_url:"#" },
+    { title:"ประวัติศาสตร์ไทย", author:"ศ.ดร.ประวิทย์", category:"ประวัติศาสตร์", description:"ท่องโลกอดีตของสยามประเทศ ตั้งแต่สมัยสุโขทัยจนถึงปัจจุบัน", cover_url:"https://picsum.photos/seed/book7/300/450", download_url:"#" },
+    { title:"สมาธิเพื่อสุขภาพ", author:"พระอาจารย์สงบ", category:"ธรรมะ", description:"คู่มือฝึกสมาธิเบื้องต้น เหมาะสำหรับผู้เริ่มต้นทุกวัย", cover_url:"https://picsum.photos/seed/book8/300/450", download_url:"#" },
+  ];
+
+  async function loadBooks() {
+    if (APPS_SCRIPT_URL === "YOUR_APPS_SCRIPT_URL") {
+      document.getElementById("config-notice").style.display = "block";
+      allBooks = DEMO;
+      populateCategories();
+      renderBooks(allBooks);
+      return;
+    }
+    try {
+      const res = await fetch(APPS_SCRIPT_URL);
+      allBooks = await res.json();
+      populateCategories();
+      renderBooks(allBooks);
+    } catch (e) {
+      document.getElementById("grid").innerHTML =
+        `<div class="msg"><span class="icon">⚠️</span>โหลดข้อมูลไม่สำเร็จ<br><small style="color:#666;margin-top:8px;display:block">กรุณาตรวจสอบ APPS_SCRIPT_URL</small></div>`;
+    }
+  }
+
+  function populateCategories() {
+    const cats = [...new Set(allBooks.map(b => b.category).filter(Boolean))].sort();
+    const sel = document.getElementById("category");
+    cats.forEach(c => {
+      const o = document.createElement("option");
+      o.value = c; o.textContent = c; sel.appendChild(o);
+    });
+  }
+
+  function filterBooks() {
+    const q = document.getElementById("search").value.toLowerCase();
+    const cat = document.getElementById("category").value;
+    const filtered = allBooks.filter(b =>
+      (!q || (b.title||"").toLowerCase().includes(q) || (b.author||"").toLowerCase().includes(q)) &&
+      (!cat || b.category === cat)
+    );
+    renderBooks(filtered);
+  }
+
+  function renderBooks(books) {
+    const stats = document.getElementById("stats");
+    stats.innerHTML = `แสดง <span>${books.length}</span> เล่ม จากทั้งหมด <span>${allBooks.length}</span> เล่ม`;
+
+    const grid = document.getElementById("grid");
+    if (!books.length) {
+      grid.innerHTML = `<div class="msg"><span class="icon">🔍</span>ไม่พบหนังสือที่ค้นหา</div>`;
+      return;
+    }
+    grid.innerHTML = books.map((b, i) => `
+      <div class="card" style="animation-delay:${i * 40}ms">
+        <img class="card-img" src="${b.cover_url || 'https://via.placeholder.com/200x300?text=No+Cover'}"
+             alt="${b.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/200x300?text=No+Cover'">
+        <div class="card-body">
+          <div class="card-title">${b.title || '-'}</div>
+          <div class="card-author">✍️ ${b.author || 'ไม่ระบุผู้แต่ง'}</div>
+          ${b.category ? `<span class="card-cat">${b.category}</span>` : ''}
+          <p class="card-desc">${b.description || ''}</p>
+          <a class="card-btn" href="${b.download_url || '#'}" target="_blank">
+            ดาวน์โหลด / อ่านเลย →
+          </a>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  loadBooks();
+</script>
+</body>
+</html>
